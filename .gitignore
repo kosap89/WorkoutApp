@@ -2,9 +2,12 @@
 
 # dependencies
 node_modules/
+/package-lock.json
+yarn.lock
 
 # Expo
 .expo/
+.expo-shared/
 dist/
 web-build/
 

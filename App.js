@@ -1,20 +1,48 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
+
+import { WorkoutProvider } from './contexts/WorkoutContext';
+import AddWorkoutScreen from './screens/AddWorkoutScreen';
+import WorkoutListScreen from './screens/WorkoutListScreen';
+import SettingsScreen from './screens/SettingScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    <WorkoutProvider>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => {
+              let iconName;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+              if (route.name === 'Add Workout') {
+                iconName = 'add-circle-outline';
+              } else if (route.name === 'Workout List') {
+                iconName = 'list-outline';
+              } else if (route.name === 'Settings') {
+                iconName = 'settings-outline';
+              }
+
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+          })}
+        >
+          <Tab.Screen name="Add Workout" component={AddWorkoutScreen} />
+          <Tab.Screen name="Workout List" component={WorkoutListScreen} />
+          <Tab.Screen name="Settings" component={SettingsScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </WorkoutProvider>
+  );
+};
+
+export default App;
